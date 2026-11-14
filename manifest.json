@@ -1,0 +1,192 @@
+{
+  "bundle_version": "1.0.0-portable",
+  "schema_version": "1.0",
+  "n8n_version": "2.41.6",
+  "postgres_version": "17.11",
+  "node_versions": {
+    "manualTrigger": 1,
+    "scheduleTrigger": 1.4,
+    "code": 2,
+    "postgres": 2.7,
+    "httpRequest": 4.5,
+    "if": 2.3,
+    "executeWorkflow": 1.4,
+    "executeWorkflowTrigger": 1.2,
+    "stickyNote": 1,
+    "errorTrigger": 1,
+    "emailSend": 2.1,
+    "splitInBatches": 3,
+    "wait": 1.1,
+    "rssFeedRead": 1.2
+  },
+  "astronomy": {
+    "library": "skyfield",
+    "version": "1.55",
+    "ephemeris": "de421",
+    "sha256": "a20a7139da04cbc462454634918e9a9ca69127044e2cc9d4f9c16e238d2deedc"
+  },
+  "workflows": {
+    "00-setup.json": "Fishing Report — Setup",
+    "20-location-report.json": "Fishing Report — Location Report",
+    "10-weekly-scheduler.json": "Fishing Report — Weekly Scheduler",
+    "40-source-evidence.json": "Fishing Report — Fishing Source Evidence",
+    "30-deliver-report.json": "Fishing Report — Deliver Archived Report",
+    "90-failure-handler.json": "Fishing Report — Failure Handler",
+    "50-community-research.json": "Fishing Report — Community Research",
+    "55-ocean-acquisition.json": "Fishing Report — Ocean Feature Cache"
+  },
+  "phase": "portable source distribution; inactive safe defaults",
+  "implemented": [
+    "setup",
+    "weekly/catch-up schedule graph",
+    "marine collectors",
+    "tides",
+    "astronomy",
+    "immutable archive",
+    "atomic run claims",
+    "factual rendering",
+    "publisher robots/delay checks",
+    "article discovery and extraction",
+    "date/geography/method filtering",
+    "deduplication",
+    "sanitized subscription writer packet",
+    "atomic two-call reservations",
+    "one repair and factual fallback",
+    "final alert recheck",
+    "fishing evidence persistence",
+    "archived multipart email delivery",
+    "atomic recipient claims",
+    "known/unknown SMTP ledger",
+    "operator failure handler",
+    "abandoned SMTP reconciliation",
+    "advertised RSS with bounded HTML fallback",
+    "concise daily method/species/location outlook",
+    "Spacefish Canaveral card provenance",
+    "Sea Leveler seasonal report history",
+    "same-location archived evidence reuse with refreshed age labels",
+    "dated tide/moon context without unsupported catch multipliers",
+    "final-alert invalidation of obsolete fishing plans",
+    "weather preferences in compact footer",
+    "ten newest regional fishing RSS articles grouped by requested location",
+    "allowlisted bounded RSS/Atom collector with publisher robots policy",
+    "news failures isolated from weather and email delivery",
+    "daily all-high-low tide and moon tables",
+    "prior-night moon horizon exposure",
+    "live primary-source research for qualitative fishing insight",
+    "fresh scoped nearshore surface temperature",
+    "freshest working temperature selection across both Canaveral buoys",
+    "immutable effective subject with date and deliberate test marker",
+    "Thursday through Tuesday calendar",
+    "durable Friday decision evaluation and suppression",
+    "shared post-final-alert comparison",
+    "atomic edition allocation and immutable candidate recovery",
+    "delivery-side persisted update validation",
+    "fresh interval-scoped LLM rough-seas humor strictly above eight feet",
+    "bounded optional quip validation with deterministic fallback",
+    "final-alert scope/freshness recomputation and historical Thursday preservation",
+    "independent durable community research jobs and bounded read-only acquisition",
+    "verified direct public post provenance; unverified discovery URLs kept separate",
+    "re-aged applicable cache with regional Ponce separation and diversified writer packet",
+    "inactive n8n ocean-cache refresh schedule",
+    "bounded MUR analyzed-background cache and map path",
+    "location-scoped disabled-by-default ocean summary contract"
+  ],
+  "pending": [
+    "step 04 controlled production rollout and recipient test",
+    "production recipient inbox confirmation",
+    "real additional-location adapters when selected",
+    "verified ACSPO observed regional subset and quality/time check",
+    "verified current HYCOM numerical subset",
+    "real clear/cloudy map inspection and immutable map retry acceptance"
+  ],
+  "migrations": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "workflow_ids": [
+    "fishing_setup_v1",
+    "fishing_source_v1",
+    "fishing_location_v1",
+    "fishing_delivery_v1",
+    "fishing_failure_v1",
+    "fishing_scheduler_v1",
+    "fishing_research_v1",
+    "fishing_ocean_acquisition_v1"
+  ],
+  "schedules": {
+    "timezone": "America/New_York",
+    "weekly": {
+      "weekday": "Wednesday",
+      "hour": 19,
+      "minute": 0,
+      "catch_up_hours": 12
+    },
+    "update": {
+      "weekday": "Friday",
+      "hour": 7,
+      "minute": 0,
+      "timezone": "America/New_York"
+    },
+    "ocean_features": {
+      "timezone": "America/New_York",
+      "wednesday": {
+        "hour": 17,
+        "minute": 30
+      },
+      "friday": {
+        "hour": 5,
+        "minute": 30
+      },
+      "state": "draft_inactive"
+    }
+  },
+  "rough_seas": {
+    "policy_version": "fresh-forecast-over-eight-v1",
+    "threshold_ft": 8,
+    "threshold_comparison": "strictly_greater_than_unrounded",
+    "max_words": 24,
+    "max_characters": 220,
+    "writer_failure": "stable_dated_scoped_fallback_without_repair"
+  },
+  "community_research": {
+    "enabled": false,
+    "providers": [
+      "hulltruth",
+      "spacefish",
+      "reddit"
+    ],
+    "schedule": {
+      "timezone": "America/New_York",
+      "wednesday_hour": 17,
+      "friday_hour": 5,
+      "minute": 0
+    },
+    "fresh_hours": 24,
+    "history_years": 5,
+    "retention_days": 30,
+    "catch_up_hours": 6,
+    "max_attempts": 3,
+    "max_observations": 40,
+    "max_pages": 8,
+    "model_seconds": 60,
+    "wall_seconds": 150,
+    "model_invocations_per_job": 1,
+    "max_query_strings": 2,
+    "max_web_calls": 2,
+    "max_host_requests": 4,
+    "max_page_bytes": 500000,
+    "max_response_bytes": 120000,
+    "writer_priority": "preempt_research",
+    "direct_reddit": "disabled_without_approved_oauth"
+  },
+  "providers": [
+    "noaa",
+    "open_meteo",
+    "worldtides",
+    "MUR"
+  ]
+}

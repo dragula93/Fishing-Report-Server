@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.fishing-report/contracts/1.0",
+  "$defs": {
+    "context": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "run_id",
+        "location_id",
+        "scheduled_for",
+        "mode"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scheduled_for": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "mode": {
+          "enum": [
+            "dry_run",
+            "render_only",
+            "send_test",
+            "production",
+            "retry_failed_deliveries"
+          ]
+        },
+        "report_anchor_scheduled_for": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "trigger_scheduled_for": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "update_kind": {
+          "enum": [
+            "friday_decisions",
+            null
+          ]
+        }
+      }
+    },
+    "collector": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "location_id",
+        "status",
+        "retrieved_at",
+        "issued_at",
+        "records",
+        "warnings",
+        "error"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "location_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "empty",
+            "stale",
+            "failed"
+          ]
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "issued_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "records": {
+          "type": "array"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "location_id",
+        "run_id",
+        "window",
+        "outlook_mode",
+        "forecast_table",
+        "observations",
+        "tides",
+        "astronomy",
+        "evidence",
+        "recommendations",
+        "validation"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "outlook_mode": {
+          "enum": [
+            "data_unavailable",
+            "limited_evidence",
+            "factual_fallback",
+            "conditional_outlook"
+          ]
+        },
+        "window": {
+          "type": "object",
+          "required": [
+            "dates",
+            "weekend",
+            "start_utc",
+            "end_utc"
+          ],
+          "properties": {
+            "dates": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 7,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            "weekend": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "comparison_dates": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        },
+        "forecast_table": {
+          "type": "array"
+        },
+        "observations": {
+          "type": "array"
+        },
+        "tides": {
+          "type": "array"
+        },
+        "astronomy": {
+          "type": "array"
+        },
+        "evidence": {
+          "type": "array"
+        },
+        "ocean_features": {
+          "oneOf": [
+            {"$ref": "ocean-features.schema.json"},
+            {"type": "null"}
+          ],
+          "description": "Optional versioned ocean snapshot; absence/null remains valid for archived reports."
+        },
+        "recommendations": {
+          "type": "array"
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "valid": {
+              "const": true
+            }
+          }
+        },
+        "daily_outlook": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "verdict",
+              "reason",
+              "tide_moon",
+              "evidence_ids"
+            ],
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "verdict": {
+                "enum": [
+                  "go",
+                  "go_conditions_only",
+                  "dont_go",
+                  "hold"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              },
+              "candidate_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "window": {
+                "enum": [
+                  "morning",
+                  "afternoon",
+                  null
+                ]
+              },
+              "point_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "tide_moon": {
+                "type": "object"
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "rough_seas_quip": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 220
+              },
+              "rough_seas_scope_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rough_seas_quip_source": {
+                "enum": [
+                  "writer",
+                  "deterministic_fallback",
+                  null
+                ]
+              },
+              "rough_seas_scopes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "policy_version",
+                    "scope_id",
+                    "date",
+                    "point_id",
+                    "zone",
+                    "window",
+                    "interval_start",
+                    "interval_end",
+                    "max_seas_ft",
+                    "unit",
+                    "coverage",
+                    "coverage_scope",
+                    "observed_forecast_intervals",
+                    "qualifying_intervals",
+                    "issued_at",
+                    "forecast_status",
+                    "checked_at",
+                    "age_hours",
+                    "forecast_evidence_id"
+                  ],
+                  "properties": {
+                    "policy_version": {
+                      "const": "fresh-forecast-over-eight-v1"
+                    },
+                    "window": {
+                      "enum": [
+                        "morning",
+                        "afternoon"
+                      ]
+                    },
+                    "max_seas_ft": {
+                      "type": "number",
+                      "exclusiveMinimum": 8
+                    },
+                    "unit": {
+                      "const": "feet"
+                    },
+                    "forecast_status": {
+                      "const": "ok"
+                    },
+                    "coverage": {
+                      "enum": [
+                        "complete",
+                        "partial"
+                      ]
+                    },
+                    "coverage_scope": {
+                      "enum": [
+                        "observed_forecast_intervals_only",
+                        "complete_display_interval"
+                      ]
+                    },
+                    "qualifying_intervals": {
+                      "type": "array",
+                      "minItems": 1
+                    },
+                    "observed_forecast_intervals": {
+                      "type": "array",
+                      "minItems": 1
+                    },
+                    "age_hours": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "fishing_news": {
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "maxItems": 10
+            },
+            "selection": {
+              "const": "ten_newest_overall_then_location"
+            },
+            "retrieved_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sources": {
+              "type": "array"
+            }
+          }
+        },
+        "bite_research": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "live_researched",
+                "unavailable"
+              ]
+            },
+            "sources": {
+              "type": "array"
+            },
+            "web_search_calls": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "effective_subject": {
+          "type": "string",
+          "maxLength": 300,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "update": {
+          "type": "object",
+          "required": [
+            "evaluation_id",
+            "candidate_report_id",
+            "baseline_report_id",
+            "baseline_policy",
+            "policy_version",
+            "before",
+            "after",
+            "changed_dates",
+            "eligibility"
+          ],
+          "properties": {
+            "policy_version": {
+              "const": "sat-mon-binary-v1"
+            },
+            "eligibility": {
+              "enum": [
+                "changed",
+                "no_change",
+                "comparison_error"
+              ]
+            },
+            "before": {
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "after": {
+              "type": [
+                "array",
+                "null"
+              ]
+            },
+            "changed_dates": {
+              "type": "array",
+              "maxItems": 3,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

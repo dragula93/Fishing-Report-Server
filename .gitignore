@@ -1,0 +1,26 @@
+# Local credentials, configuration, private inputs and outputs
+.env
+.env.*
+!**/.env.example
+config/*.private.json
+artifacts/
+data/
+backups/
+.private/
+.ssh/
+id_*
+*.pem
+*.key
+*PWs.txt
+*credential*.json
+auth.json
+*.gpx
+*.dump
+*.sqlite*
+*.db
+*.tar*
+*.zip
+node_modules/
+__pycache__/
+.venv/
+.pytest_cache/

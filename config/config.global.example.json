@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "configuration_ready": false,
+  "execution": {
+    "mode": "dry_run",
+    "test_recipient": null
+  },
+  "schedule": {
+    "timezone": "Australia/Sydney",
+    "weekday": "Wednesday",
+    "hour": 19,
+    "minute": 0,
+    "delivery_target_hour": 20,
+    "catch_up_hours": 12
+  },
+  "llm": {
+    "backend": "codex_chatgpt",
+    "enabled": false,
+    "model": null,
+    "max_repair_attempts": 1,
+    "max_calls_per_run": 2,
+    "api_fallback_enabled": false,
+    "monthly_budget_usd": null
+  },
+  "email": {
+    "backend": "gmail_smtp",
+    "sender": null,
+    "operator": null,
+    "smtp_ready": false,
+    "report_subject": "Weekly Fishing Report"
+  },
+  "locations": [
+    {
+      "id": "sydney_au",
+      "name": "Sydney, Australia (example)",
+      "enabled": true,
+      "timezone": "Australia/Sydney",
+      "departure_point": {
+        "name": "Your verified departure point",
+        "latitude": -33.84,
+        "longitude": 151.28
+      },
+      "max_one_way_distance": {
+        "value": 40,
+        "unit": "nautical_mile"
+      },
+      "habitats": [
+        "nearshore",
+        "offshore"
+      ],
+      "methods": [
+        "trolling",
+        "bottom_fishing",
+        "nearshore_bait"
+      ],
+      "marine_zones": [],
+      "tide_station": null,
+      "buoy_stations": [],
+      "forecast_points": [
+        {
+          "id": "nearshore",
+          "latitude": -33.85,
+          "longitude": 151.35,
+          "zone": "nearshore"
+        },
+        {
+          "id": "offshore",
+          "latitude": -33.85,
+          "longitude": 151.55,
+          "zone": "offshore"
+        }
+      ],
+      "astronomy_point": {
+        "latitude": -33.84,
+        "longitude": 151.28,
+        "basis": "example only; verify before use"
+      },
+      "fishing_sources": [],
+      "vessel": {
+        "name": "Example vessel",
+        "length_ft": 23,
+        "hull": "deep V",
+        "max_seas_ft": 4,
+        "wave_period_rules": [
+          {
+            "max_seas_ft": 2,
+            "max_exclusive": true,
+            "min_period_seconds": 4,
+            "period_exclusive": false
+          },
+          {
+            "max_seas_ft": 3,
+            "max_exclusive": false,
+            "min_period_seconds": 6,
+            "period_exclusive": false
+          },
+          {
+            "max_seas_ft": 4,
+            "max_exclusive": false,
+            "min_period_seconds": 8,
+            "period_exclusive": true
+          }
+        ],
+        "max_wind_knots": 20,
+        "preferences_ready": true,
+        "max_gust_below_15_knots": 25,
+        "max_gust_at_or_above_15_knots": 20
+      },
+      "verified_routes": [],
+      "temperature_buoy_station": null,
+      "ocean_features": {
+        "enabled": false,
+        "main_bounds": {
+          "south": -34.2,
+          "north": -33.5,
+          "west": 151.1,
+          "east": 152.2
+        },
+        "context_bounds": {
+          "south": -34.2,
+          "north": -33.5,
+          "west": 151.1,
+          "east": 152.2
+        },
+        "reference": {
+          "latitude": -33.84,
+          "longitude": 151.28,
+          "basis": "example"
+        },
+        "gpx_inputs": [],
+        "ranking": {
+          "policy": "contrast-first-v1",
+          "common_transect_km": 4,
+          "minimum_adjacent_transects": 3,
+          "max_features": 3
+        },
+        "second_reference": {
+          "max_distance_nmi": 20,
+          "minimum_baseline_nmi": 1,
+          "minimum_angle_degrees": 30,
+          "maximum_angle_degrees": 150,
+          "distance_increment_nmi": 0.5,
+          "bearing_increment_degrees": 5
+        },
+        "freshness_hours": {
+          "observed_current": 36,
+          "observed_context": 72,
+          "analysed_background": 72,
+          "model_run": 48,
+          "model_sst_time_match": 6
+        },
+        "thresholds": {
+          "minimum_gradient_c_per_km": 0.15,
+          "minimum_length_km": 5,
+          "minimum_contrast_c": 0.5
+        },
+        "cache": {
+          "directory": "/data/ocean-cache",
+          "retention_days": 14,
+          "read_budget_seconds": 5,
+          "max_original_file_mib": 600,
+          "max_concurrent_large_downloads": 1,
+          "acquisition_budget_seconds": 300
+        },
+        "sources": {
+          "mur": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41",
+          "acspo_enabled": false,
+          "hycom_enabled": false
+        }
+      },
+      "marine_provider": "open_meteo",
+      "marine_product_url": null,
+      "geography_terms": [
+        "Sydney"
+      ],
+      "species_catalog": [
+        "yellowtail kingfish",
+        "snapper"
+      ],
+      "tide_datum": "MSL"
+    }
+  ],
+  "sources": [],
+  "subscribers": [
+    {
+      "email": "recipient@example.com",
+      "enabled": false,
+      "locations": [
+        "sydney_au"
+      ]
+    }
+  ],
+  "target_rules": [],
+  "quality": {
+    "forecast_max_age_hours": 12,
+    "observation_max_age_hours": 3,
+    "current_evidence_days": 7,
+    "recent_evidence_days": 14,
+    "max_report_age_days": 28,
+    "max_seasonal_offset_days": 56
+  },
+  "news": {
+    "enabled": false,
+    "feeds": [],
+    "regions": []
+  },
+  "update_schedule": {
+    "weekday": "Friday",
+    "hour": 7,
+    "minute": 0,
+    "timezone": "Australia/Sydney"
+  },
+  "community_research": {
+    "enabled": false,
+    "providers": [
+      "hulltruth",
+      "spacefish",
+      "reddit"
+    ],
+    "schedule": {
+      "timezone": "Australia/Sydney",
+      "wednesday_hour": 17,
+      "friday_hour": 5,
+      "minute": 0
+    },
+    "fresh_hours": 24,
+    "history_years": 5,
+    "retention_days": 30,
+    "catch_up_hours": 6,
+    "max_attempts": 3,
+    "max_observations": 40,
+    "max_pages": 8,
+    "model_seconds": 60,
+    "wall_seconds": 150
+  }
+}

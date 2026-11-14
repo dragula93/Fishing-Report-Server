@@ -1,0 +1,15 @@
+.git
+.private
+artifacts
+data
+backups
+deploy/.env
+config/*.private.json
+**/*.gpx
+**/*.pem
+**/*.key
+**/auth.json
+**/id_*
+**/__pycache__
+node_modules
+.venv

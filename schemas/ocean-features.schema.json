@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.fishing-report/ocean-features/1.0",
+  "title": "Dated ocean feature summary",
+  "type": "object",
+  "required": ["schema_version", "location_id", "snapshot_id", "status", "acquisition_status", "analysis_status", "generated_at", "reference", "bounds", "sources", "coverage", "features", "warnings"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "location_id": {"type": "string", "minLength": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["disabled", "ok", "partial", "analysis_only", "stale", "unavailable"]},
+    "acquisition_status": {"enum": ["ok", "partial", "unavailable", "not_attempted"]},
+    "analysis_status": {"enum": ["ok", "partial", "analysis_only", "no_feature", "not_run", "failed"]},
+    "generated_at": {"type": "string", "format": "date-time"}, "retrieved_at": {"type": ["string", "null"], "format": "date-time"},
+    "reference": {"type": "object", "required": ["latitude", "longitude", "basis"], "properties": {"latitude": {"type": ["number", "null"]}, "longitude": {"type": ["number", "null"]}, "basis": {"type": "string"}}, "additionalProperties": true},
+    "bounds": {"type": "object", "required": ["main", "context"], "properties": {"main": {"$ref": "#/$defs/box"}, "context": {"$ref": "#/$defs/box"}}, "additionalProperties": true},
+    "sources": {"type": ["array", "null"], "items": {"$ref": "#/$defs/source"}},
+    "coverage": {"type": ["object", "null"], "properties": {"observed_fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "analysis_fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "valid_domain_fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1}}, "additionalProperties": true},
+    "features": {"type": ["array", "null"], "maxItems": 3, "items": {"$ref": "#/$defs/feature"}},
+    "waypoint_snapshot": {"type": ["object", "null"], "additionalProperties": true},
+    "map": {"type": ["object", "null"], "properties": {"status": {"type": "string"}, "relative_path": {"type": ["string", "null"]}, "sha256": {"type": ["string", "null"]}, "mime_type": {"type": ["string", "null"]}, "artifact_base64": {"type": ["string", "null"], "contentEncoding": "base64"}, "attachment_filename": {"type": ["string", "null"]}}, "additionalProperties": true},
+    "warnings": {"type": ["array", "null"], "items": {"type": "string"}}
+  },
+  "$defs": {
+    "box": {"type": "object", "required": ["south", "north", "west", "east"], "properties": {"south": {"type": "number"}, "north": {"type": "number"}, "west": {"type": "number"}, "east": {"type": "number"}}, "additionalProperties": false},
+    "source": {"type": "object", "required": ["provider", "product", "class", "url", "analysis_time", "units", "quality_policy"], "properties": {"provider": {"type": "string"}, "product": {"type": "string"}, "version": {"type": ["string", "null"]}, "url": {"type": "string", "format": "uri"}, "class": {"enum": ["satellite_composite", "analysed_sst", "model_guidance", "buoy_observation"]}, "analysis_time": {"type": ["string", "null"]}, "observation_interval": {"type": ["object", "null"]}, "pixel_age_available": {"type": ["boolean", "null"]}, "model_run": {"type": ["string", "null"]}, "model_valid_time": {"type": ["string", "null"]}, "model_lead_hours": {"type": ["number", "null"]}, "depth_m": {"type": ["number", "null"]}, "units": {"type": ["string", "null"]}, "grid_spacing_km": {"type": ["number", "null"]}, "quality_policy": {"type": "string"}, "content_hash": {"type": ["string", "null"]}}, "additionalProperties": true},
+    "feature": {"type": "object", "required": ["feature_id", "kind", "geometry", "locator", "contrast_c", "evidence_ids", "confidence", "ranking", "waypoint_references", "route_eligibility"], "properties": {"feature_id": {"type": "string"}, "kind": {"enum": ["temperature_break", "warm_patch", "warm_tongue", "eddy_candidate"]}, "geometry": {"type": ["object", "null"]}, "locator": {"type": "object", "required": ["latitude", "longitude", "basis", "uncertainty_km"], "properties": {"latitude": {"type": ["number", "null"]}, "longitude": {"type": ["number", "null"]}, "basis": {"type": ["string", "null"]}, "uncertainty_km": {"type": ["number", "null"]}}, "additionalProperties": true}, "contrast_c": {"type": ["number", "null"]}, "transect_width_km": {"type": ["number", "null"]}, "gradient_c_per_km": {"type": ["number", "null"]}, "extent_km": {"type": ["number", "null"]}, "timestamps": {"type": ["object", "null"]}, "evidence_ids": {"type": ["array", "null"], "items": {"type": "string"}}, "coverage": {"type": ["object", "null"]}, "confidence": {"type": ["object", "null"], "properties": {"label": {"type": ["string", "null"]}, "reasons": {"type": ["array", "null"], "items": {"type": "string"}}}, "additionalProperties": true}, "circulation_support": {"enum": ["not_checked", "unsupported", "model_supported", "unknown", null]}, "ranking": {"type": ["object", "null"]}, "selection_reason": {"type": ["string", "null"]}, "waypoint_references": {"type": ["array", "null"], "maxItems": 2, "items": {"type": "object"}}, "route_eligibility": {"type": ["object", "null"]}}, "additionalProperties": true}
+  },
+  "additionalProperties": true
+}

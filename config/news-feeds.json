@@ -1,0 +1,12 @@
+[
+  {"id":"spacefish_news","name":"Spacefish","url":"https://spacefish.com/feed/","allowed_hosts":["spacefish.com"],"default_region":"brevard","fishing_only":true},
+  {"id":"sealeveler_news","name":"Sea Leveler","url":"https://www.sealeveler.com/feed/","allowed_hosts":["www.sealeveler.com"],"default_region":"brevard","fishing_only":true},
+  {"id":"fin_fly_news","name":"Fin & Fly","url":"https://finandflycharters.com/feed/","allowed_hosts":["finandflycharters.com"],"default_region":"brevard","fishing_only":true},
+  {"id":"coastal_angler_news","name":"Coastal Angler Magazine","url":"https://coastalanglermag.com/feed/","allowed_hosts":["coastalanglermag.com"],"default_region":null,"fishing_only":false},
+  {"id":"spacecoast_daily_news","name":"Space Coast Daily — Fishing","url":"https://spacecoastdaily.com/tag/fishing/feed/","allowed_hosts":["spacecoastdaily.com"],"default_region":null,"fishing_only":false},
+  {"id":"ponce_charters_news","name":"Ponce Inlet Charters","url":"https://www.ponceinletcharters.com/2/feed","allowed_hosts":["www.ponceinletcharters.com"],"default_region":"ponce","fishing_only":true},
+  {"id":"keys_weekly_news","name":"Keys Weekly — Fishing","url":"https://keysweekly.com/42/category/weekly-columns/fishing/feed/","allowed_hosts":["keysweekly.com"],"default_region":"keys","fishing_only":true},
+  {"id":"bud_marys_news","name":"Bud N’ Mary’s","url":"https://www.budnmarys.com/feed/","allowed_hosts":["www.budnmarys.com"],"default_region":"keys","fishing_only":true},
+  {"id":"all_in_keys_news","name":"ALL IN Key West","url":"https://fishallinkeywest.com/feed","allowed_hosts":["fishallinkeywest.com"],"default_region":"keys","fishing_only":true},
+  {"id":"keywest_report_news","name":"The Key West Fishing Report","url":"https://thekeywestfishingreport.com/feed/","allowed_hosts":["thekeywestfishingreport.com"],"default_region":"keys","fishing_only":true}
+]

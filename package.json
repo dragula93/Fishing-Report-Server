@@ -1,0 +1,12 @@
+{
+  "name": "fishing-report-workflows",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/run-unit-tests.js",
+    "build": "node scripts/build-workflows.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,412 @@
+{
+  "schema_version": "1.0",
+  "configuration_ready": false,
+  "execution": {
+    "mode": "dry_run",
+    "test_recipient": null
+  },
+  "schedule": {
+    "timezone": "America/New_York",
+    "weekday": "Wednesday",
+    "hour": 19,
+    "minute": 0,
+    "delivery_target_hour": 20,
+    "catch_up_hours": 12
+  },
+  "llm": {
+    "backend": "codex_chatgpt",
+    "enabled": false,
+    "model": null,
+    "max_repair_attempts": 1,
+    "max_calls_per_run": 2,
+    "api_fallback_enabled": false,
+    "monthly_budget_usd": null
+  },
+  "email": {
+    "backend": "gmail_smtp",
+    "sender": null,
+    "operator": null,
+    "smtp_ready": false,
+    "report_subject": "Weekly Fishing Report"
+  },
+  "locations": [
+    {
+      "id": "port_canaveral_fl",
+      "name": "Port Canaveral, FL",
+      "enabled": true,
+      "timezone": "America/New_York",
+      "departure_point": {
+        "name": "Port Canaveral ocean inlet",
+        "latitude": null,
+        "longitude": null
+      },
+      "max_one_way_distance": {
+        "value": 40,
+        "unit": "nautical_mile"
+      },
+      "habitats": [
+        "nearshore",
+        "offshore"
+      ],
+      "methods": [
+        "trolling",
+        "bottom_fishing",
+        "nearshore_bait"
+      ],
+      "marine_zones": [
+        "AMZ552",
+        "AMZ572"
+      ],
+      "tide_station": "8721604",
+      "buoy_stations": [
+        "41009"
+      ],
+      "forecast_points": [
+        {
+          "id": "nearshore",
+          "latitude": 28.45,
+          "longitude": -80.3,
+          "zone": "AMZ552"
+        },
+        {
+          "id": "offshore",
+          "latitude": 28.45,
+          "longitude": -80,
+          "zone": "AMZ572"
+        }
+      ],
+      "astronomy_point": {
+        "latitude": 28.4158,
+        "longitude": -80.5936,
+        "basis": "NOAA Trident Pier tide station; departure coordinates remain unverified"
+      },
+      "fishing_sources": [
+        "spacefish_canaveral",
+        "canaveral_kings",
+        "ocean_obsession",
+        "sealeveler_canaveral",
+        "spacefish_surf",
+        "sealeveler_monthly"
+      ],
+      "vessel": {
+        "name": "Example vessel",
+        "length_ft": 23,
+        "hull": "deep V",
+        "max_seas_ft": 4,
+        "wave_period_rules": [
+          {
+            "max_seas_ft": 2,
+            "max_exclusive": true,
+            "min_period_seconds": 4,
+            "period_exclusive": false
+          },
+          {
+            "max_seas_ft": 3,
+            "max_exclusive": false,
+            "min_period_seconds": 6,
+            "period_exclusive": false
+          },
+          {
+            "max_seas_ft": 4,
+            "max_exclusive": false,
+            "min_period_seconds": 8,
+            "period_exclusive": true
+          }
+        ],
+        "max_wind_knots": 20,
+        "preferences_ready": true,
+        "max_gust_below_15_knots": 25,
+        "max_gust_at_or_above_15_knots": 20
+      },
+      "verified_routes": [],
+      "temperature_buoy_station": "41113",
+      "ocean_features": {
+        "enabled": false,
+        "main_bounds": {
+          "south": 27.75,
+          "north": 29.09,
+          "west": -81.05,
+          "east": -79.84
+        },
+        "context_bounds": {
+          "south": 27,
+          "north": 30,
+          "west": -81.3,
+          "east": -78.5
+        },
+        "reference": {
+          "latitude": 28.42,
+          "longitude": -80.6,
+          "basis": "provisional_reference"
+        },
+        "gpx_inputs": [],
+        "ranking": {
+          "policy": "contrast-first-v1",
+          "common_transect_km": 4,
+          "minimum_adjacent_transects": 3,
+          "max_features": 3
+        },
+        "second_reference": {
+          "max_distance_nmi": 20,
+          "minimum_baseline_nmi": 1,
+          "minimum_angle_degrees": 30,
+          "maximum_angle_degrees": 150,
+          "distance_increment_nmi": 0.5,
+          "bearing_increment_degrees": 5
+        },
+        "freshness_hours": {
+          "observed_current": 36,
+          "observed_context": 72,
+          "analysed_background": 72,
+          "model_run": 48,
+          "model_sst_time_match": 6
+        },
+        "thresholds": {
+          "minimum_gradient_c_per_km": 0.15,
+          "minimum_length_km": 5,
+          "minimum_contrast_c": 0.5
+        },
+        "cache": {
+          "directory": "/data/ocean-cache",
+          "retention_days": 14,
+          "read_budget_seconds": 5,
+          "max_original_file_mib": 600,
+          "max_concurrent_large_downloads": 1,
+          "acquisition_budget_seconds": 300
+        },
+        "sources": {
+          "mur": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41",
+          "acspo_enabled": false,
+          "hycom_enabled": false
+        }
+      },
+      "marine_provider": "noaa",
+      "marine_product_url": "https://tgftp.nws.noaa.gov/data/raw/fz/fzus52.kmlb.cwf.mlb.txt",
+      "geography_terms": [
+        "Port Canaveral",
+        "Cape Canaveral"
+      ],
+      "species_catalog": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "spacefish_canaveral",
+      "url": "https://spacefish.com/canaveral/",
+      "domain": "spacefish.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "recent_reports",
+      "article_limit": 8
+    },
+    {
+      "id": "canaveral_kings",
+      "url": "https://canaveralkings.com/blog/",
+      "domain": "canaveralkings.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "seasonal_background",
+      "article_limit": 6
+    },
+    {
+      "id": "ocean_obsession",
+      "url": "https://fishobsession.com/fishing-reports/",
+      "domain": "fishobsession.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "candidate_reports",
+      "article_limit": 6
+    },
+    {
+      "id": "sealeveler_canaveral",
+      "url": "https://www.sealeveler.com/flfishingblog/category/fishingreports/",
+      "domain": "www.sealeveler.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "historical_reports",
+      "article_limit": 8
+    },
+    {
+      "id": "spacefish_surf",
+      "url": "https://spacefish.com/surf/",
+      "domain": "spacefish.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "recent_reports",
+      "article_limit": 1
+    },
+    {
+      "id": "sealeveler_monthly",
+      "url": "https://www.sealeveler.com/fish-caught-by-month/",
+      "domain": "www.sealeveler.com",
+      "enabled": true,
+      "min_delay_seconds": 3,
+      "role": "seasonal_background",
+      "article_limit": 1
+    }
+  ],
+  "subscribers": [
+    {
+      "email": "recipient@example.com",
+      "enabled": false,
+      "locations": [
+        "port_canaveral_fl"
+      ]
+    }
+  ],
+  "target_rules": [],
+  "quality": {
+    "forecast_max_age_hours": 12,
+    "observation_max_age_hours": 3,
+    "current_evidence_days": 7,
+    "recent_evidence_days": 14,
+    "max_report_age_days": 28,
+    "max_seasonal_offset_days": 56
+  },
+  "news": {
+    "enabled": true,
+    "max_items": 10,
+    "selection": "ten_newest_overall_then_location",
+    "feeds": [
+      {
+        "id": "spacefish_news",
+        "name": "Spacefish",
+        "url": "https://spacefish.com/feed/",
+        "allowed_hosts": [
+          "spacefish.com"
+        ],
+        "default_region": "brevard",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "sealeveler_news",
+        "name": "Sea Leveler",
+        "url": "https://www.sealeveler.com/feed/",
+        "allowed_hosts": [
+          "www.sealeveler.com"
+        ],
+        "default_region": "brevard",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "fin_fly_news",
+        "name": "Fin & Fly",
+        "url": "https://finandflycharters.com/feed/",
+        "allowed_hosts": [
+          "finandflycharters.com"
+        ],
+        "default_region": "brevard",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "coastal_angler_news",
+        "name": "Coastal Angler Magazine",
+        "url": "https://coastalanglermag.com/feed/",
+        "allowed_hosts": [
+          "coastalanglermag.com"
+        ],
+        "default_region": null,
+        "fishing_only": false,
+        "enabled": true
+      },
+      {
+        "id": "spacecoast_daily_news",
+        "name": "Space Coast Daily \u00e2\u20ac\u201d Fishing",
+        "url": "https://spacecoastdaily.com/tag/fishing/feed/",
+        "allowed_hosts": [
+          "spacecoastdaily.com"
+        ],
+        "default_region": null,
+        "fishing_only": false,
+        "enabled": false
+      },
+      {
+        "id": "ponce_charters_news",
+        "name": "Ponce Inlet Charters",
+        "url": "https://www.ponceinletcharters.com/2/feed",
+        "allowed_hosts": [
+          "www.ponceinletcharters.com"
+        ],
+        "default_region": "ponce",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "keys_weekly_news",
+        "name": "Keys Weekly \u00e2\u20ac\u201d Fishing",
+        "url": "https://keysweekly.com/42/category/weekly-columns/fishing/feed/",
+        "allowed_hosts": [
+          "keysweekly.com"
+        ],
+        "default_region": "keys",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "bud_marys_news",
+        "name": "Bud N\u00e2\u20ac\u2122 Mary\u00e2\u20ac\u2122s",
+        "url": "https://www.budnmarys.com/feed/",
+        "allowed_hosts": [
+          "www.budnmarys.com"
+        ],
+        "default_region": "keys",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "all_in_keys_news",
+        "name": "ALL IN Key West",
+        "url": "https://fishallinkeywest.com/feed",
+        "allowed_hosts": [
+          "fishallinkeywest.com"
+        ],
+        "default_region": "keys",
+        "fishing_only": true,
+        "enabled": true
+      },
+      {
+        "id": "keywest_report_news",
+        "name": "The Key West Fishing Report",
+        "url": "https://thekeywestfishingreport.com/feed/",
+        "allowed_hosts": [
+          "thekeywestfishingreport.com"
+        ],
+        "default_region": "keys",
+        "fishing_only": true,
+        "enabled": true
+      }
+    ]
+  },
+  "update_schedule": {
+    "weekday": "Friday",
+    "hour": 7,
+    "minute": 0,
+    "timezone": "America/New_York"
+  },
+  "community_research": {
+    "enabled": false,
+    "providers": [
+      "hulltruth",
+      "spacefish",
+      "reddit"
+    ],
+    "schedule": {
+      "timezone": "America/New_York",
+      "wednesday_hour": 17,
+      "friday_hour": 5,
+      "minute": 0
+    },
+    "fresh_hours": 24,
+    "history_years": 5,
+    "retention_days": 30,
+    "catch_up_hours": 6,
+    "max_attempts": 3,
+    "max_observations": 40,
+    "max_pages": 8,
+    "model_seconds": 60,
+    "wall_seconds": 150
+  }
+}

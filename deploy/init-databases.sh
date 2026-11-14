@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+psql --username "$POSTGRES_USER" --dbname postgres --set=ON_ERROR_STOP=1 --set=n8n_password="$N8N_DB_PASSWORD" --set=app_password="$APP_DB_PASSWORD" <<'SQL'
+CREATE ROLE n8n_app LOGIN PASSWORD :'n8n_password' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE ROLE fishing_app LOGIN PASSWORD :'app_password' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE DATABASE n8n OWNER n8n_app;
+CREATE DATABASE fishing OWNER fishing_app;
+REVOKE CONNECT ON DATABASE n8n FROM PUBLIC;
+GRANT CONNECT ON DATABASE n8n TO n8n_app;
+REVOKE CONNECT ON DATABASE fishing FROM PUBLIC;
+GRANT CONNECT ON DATABASE fishing TO fishing_app;
+SQL

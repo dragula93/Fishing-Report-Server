@@ -1,0 +1,12 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Community research acquisition response",
+ "type":"object","required":["status","records"],
+ "properties":{
+  "status":{"enum":["completed","completed_empty","partial","access_unavailable","rate_limited","failed","skipped","disabled"]},
+  "error":{"type":["string","null"],"maxLength":200},
+  "records":{"type":"array","maxItems":40,"items":{"type":"object","required":["evidence_id","provider_post_id","provenance_type","url","retrieved_at","published_at","fishing_date","first_hand","geography","applicable_location_ids","excerpt","excerpt_provenance","trip_identity"],"properties":{"provenance_type":{"const":"verified_public_community"},"provider":{"enum":["hulltruth","spacefish"]},"excerpt":{"type":"string","maxLength":500},"first_hand":{"const":true},"geography":{"enum":["canaveral_brevard","ponce_volusia"]},"current_qualifying":{"type":"boolean"},"url":{"type":"string","pattern":"^https://","maxLength":1800}}}},
+  "leads":{"type":"array","maxItems":12},"providers":{"type":"array","maxItems":3},"audit":{"type":"object"}
+ },
+ "additionalProperties":false
+}

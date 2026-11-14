@@ -1,0 +1,130 @@
+name: ${COMPOSE_PROJECT_NAME:-fishing-report}
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?Set exact PostgreSQL image}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?}
+      POSTGRES_DB: postgres
+      N8N_DB_PASSWORD: ${N8N_DB_PASSWORD:?}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-databases.sh:/docker-entrypoint-initdb.d/10-databases.sh:ro,Z
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.41.6
+    restart: unless-stopped
+    ports: ["${EDITOR_BIND_IP:?}:5678:5678"]
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: '5432'
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_USER: n8n_app
+      DB_POSTGRESDB_PASSWORD: ${N8N_DB_PASSWORD:?}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?}
+      GENERIC_TIMEZONE: ${REPORT_TIMEZONE:-UTC}
+      TZ: ${REPORT_TIMEZONE:-UTC}
+      N8N_HOST: ${EDITOR_HOST:?}
+      N8N_PORT: '5678'
+      N8N_PROTOCOL: http
+      N8N_EDITOR_BASE_URL: http://${EDITOR_HOST}:5678/
+      WEBHOOK_URL: http://${EDITOR_HOST}:5678/
+      N8N_SECURE_COOKIE: 'false'
+      N8N_RUNNERS_MODE: external
+      N8N_RUNNERS_BROKER_LISTEN_ADDRESS: 0.0.0.0
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN:?}
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: 'true'
+      N8N_DIAGNOSTICS_ENABLED: 'false'
+      N8N_PERSONALIZATION_ENABLED: 'false'
+      EXECUTIONS_DATA_PRUNE: 'true'
+      EXECUTIONS_DATA_MAX_AGE: '336'
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: none
+      EXECUTIONS_DATA_SAVE_ON_ERROR: all
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: 'true'
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ../workflows:/bundle/workflows:ro,Z
+      - ../artifacts/private:/private:ro,Z
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [backend, outbound]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:5678/healthz/readiness').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}
+  runners:
+    image: n8nio/runners:2.41.6
+    restart: unless-stopped
+    environment:
+      N8N_RUNNERS_TASK_BROKER_URI: http://n8n:5679
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN:?}
+      N8N_RUNNERS_AUTO_SHUTDOWN_TIMEOUT: '0'
+      TZ: ${REPORT_TIMEZONE:-UTC}
+    networks: [backend]
+    depends_on:
+      n8n: {condition: service_healthy}
+    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}
+  helper:
+    build: {context: .., dockerfile: helper/Dockerfile}
+    image: fishing-report-helper:0.11.0
+    restart: unless-stopped
+    environment:
+      OCEAN_FEATURES_ENABLED: ${OCEAN_FEATURES_ENABLED:-false}
+      OCEAN_CACHE_DIR: /data/ocean-cache
+      REPORT_CONFIG: /config/report.json
+      WORLDTIDES_API_KEY: ${WORLDTIDES_API_KEY:-}
+      OPEN_METEO_API_KEY: ${OPEN_METEO_API_KEY:-}
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [backend, outbound]
+    volumes:
+      - ocean_cache:/data/ocean-cache
+      - ../config/config.private.json:/config/report.json:ro,Z
+      - ../data/gpx:/data/gpx:ro,Z
+      - ../data/alerts:/data/alerts:ro,Z
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz',timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}
+  writer:
+    build: {context: .., dockerfile: writer/Dockerfile}
+    image: fishing-report-writer:0.11.0
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      CODEX_HOME: /data/.codex
+      TZ: ${REPORT_TIMEZONE:-UTC}
+    volumes: [codex_auth:/data/.codex]
+    networks: [backend, outbound]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:8081/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}
+networks:
+  backend: {internal: true}
+  outbound: {}
+volumes:
+  postgres_data: {}
+  n8n_data: {}
+  codex_auth: {}
+  ocean_cache: {}

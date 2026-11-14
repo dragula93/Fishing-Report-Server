@@ -1,0 +1,150 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "daily": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "verdict": {
+            "enum": [
+              "go",
+              "go_conditions_only",
+              "dont_go",
+              "hold"
+            ]
+          },
+          "candidate_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "window": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "point_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "tide_moon_note": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rough_seas_quip": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 220
+          },
+          "rough_seas_scope_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "date",
+          "verdict",
+          "candidate_id",
+          "window",
+          "point_id",
+          "reason",
+          "tide_moon_note",
+          "evidence_ids",
+          "rough_seas_quip",
+          "rough_seas_scope_id"
+        ]
+      }
+    },
+    "overview": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sentence": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "sentence",
+          "evidence_ids"
+        ]
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "species": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eligibility_note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "species",
+          "method",
+          "summary",
+          "evidence_ids",
+          "eligibility_note"
+        ]
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "overview",
+    "recommendations",
+    "limitations",
+    "daily"
+  ]
+}
